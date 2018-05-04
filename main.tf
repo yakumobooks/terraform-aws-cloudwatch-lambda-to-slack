@@ -98,7 +98,7 @@ resource "aws_lambda_function" "slack" {
 
 resource "aws_cloudwatch_event_rule" "billing_report" {
   name                = "billing_report_to_slack"
-  description         = "aws and other billing info monitoring by lambda"
+  description         = "billing report event trigger"
   schedule_expression = "${var.cloudwatch_cron}"
 }
 
