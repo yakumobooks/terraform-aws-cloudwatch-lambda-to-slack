@@ -16,7 +16,7 @@ resource "aws_kms_key" "key" {
   is_enabled  = true
 }
 
-data "aws_kms_ciphertext" "enc" {
+data "aws_kms_ciphertext" "kms_cipher" {
   key_id    = "${aws_kms_key.key.key_id}"
   plaintext = "${var.slack_webhook_url}"
 }
@@ -89,22 +89,22 @@ resource "aws_lambda_function" "slack" {
   environment {
     variables = {
       slackChannel        = "${var.slack_channel_name}",
-      kmsEncryptedHookUrl = "${data.aws_kms_ciphertext.enc.ciphertext_blob}",
+      kmsEncryptedHookUrl = "${data.aws_kms_ciphertext.kms_cipher.ciphertext_blob}",
       thresholdWarning    = "${var.billing_threshold_warning}",
       thresholdDanger     = "${var.billing_threshold_danger}"
     }
   }
 }
 
-resource "aws_cloudwatch_event_rule" "billing_alerm" {
-  name                = "billing_alerm_to_slack"
+resource "aws_cloudwatch_event_rule" "billing_report" {
+  name                = "billing_report_to_slack"
   description         = "aws and other billing info monitoring by lambda"
   schedule_expression = "${var.cloudwatch_cron}"
 }
 
-resource "aws_cloudwatch_event_target" "billing_alerm" {
-  rule      = "${aws_cloudwatch_event_rule.billing_alerm.name}"
-  target_id = "${aws_cloudwatch_event_rule.billing_alerm.name}"
+resource "aws_cloudwatch_event_target" "billing_report" {
+  rule      = "${aws_cloudwatch_event_rule.billing_report.name}"
+  target_id = "${aws_cloudwatch_event_rule.billing_report.name}"
   arn       = "${aws_lambda_function.slack.arn}"
 }
 
@@ -113,5 +113,5 @@ resource "aws_lambda_permission" "cloudwatch_execution" {
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.slack.function_name}"
   principal     = "events.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.billing_alerm.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.billing_report.arn}"
 }
