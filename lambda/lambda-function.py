@@ -63,10 +63,10 @@ def lambda_handler(event, context):
         color = 'warning'
     
     slack_message = {
-        'pretext': "Current Service Usage Fee",
+        'pretext': "Current Service Usage Charge",
         'color'  : color,
         'channel': SLACK_CHANNEL,
-        'title'  : "AWS Billing Information",
+        'title'  : "AWS Costs",
         'fields' : fields,
         'text'   : "The total cost of %s is $%s ." % (datetime.strftime(utc_now, '%m %Y'), str(round(total, 2)))
     }
