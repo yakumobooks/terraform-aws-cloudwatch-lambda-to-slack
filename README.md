@@ -29,7 +29,7 @@ billing_threshold_danger  = 100
 ## Notes
 - AWS Key Management Service (KMS) costs $1/month.
 - Cost Explorer API cost for each API call is $0.01.
-- It does not correspond to the response of multiple pages of Cost Explorer API. See [get_cost_and_usage](http://boto3.readthedocs.io/en/latest/reference/services/ce.html)
+- It does not correspond to the response of the multiple set of results of Cost Explorer API. See [get_cost_and_usage](http://boto3.readthedocs.io/en/latest/reference/services/ce.html)
 
 ## License
 MIT

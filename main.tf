@@ -4,6 +4,7 @@ variable "slack_webhook_url"         {}
 variable "cloudwatch_cron"           {}
 variable "lambda_function_name"      {}
 variable "lambda_handler_name"       {}
+variable "billing_cost_type"         {}
 variable "billing_threshold_warning" {}
 variable "billing_threshold_danger"  {}
 
@@ -90,6 +91,7 @@ resource "aws_lambda_function" "slack" {
     variables = {
       slackChannel        = "${var.slack_channel_name}",
       kmsEncryptedHookUrl = "${data.aws_kms_ciphertext.kms_cipher.ciphertext_blob}",
+      costType            = "${var.billing_cost_type}",
       thresholdWarning    = "${var.billing_threshold_warning}",
       thresholdDanger     = "${var.billing_threshold_danger}"
     }
