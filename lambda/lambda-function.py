@@ -41,7 +41,7 @@ def lambda_handler(event, context):
                 'End'  : str(end)
             },
             Granularity = 'MONTHLY',
-            Metrics     = ["BlendedCost", "UnblendedCost"],
+            Metrics     = ['BlendedCost', 'UnblendedCost'],
             GroupBy     = [{
                 'Type': 'DIMENSION',
                 'Key' : 'SERVICE'
